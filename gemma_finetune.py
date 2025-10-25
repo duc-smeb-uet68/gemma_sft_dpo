@@ -1,8 +1,8 @@
 from datasets import load_dataset
 
 
-from huggingface_hub import login
-login(token="HF_TOKEN")
+# from huggingface_hub import login
+# login(token="HF_TOKEN")
 
 dataset_name = "gsm8k"
 dataset = load_dataset(dataset_name, "main")
@@ -78,19 +78,17 @@ from transformers import TrainingArguments
 from trl import SFTTrainer
 
 
-
-# Cấu hình các tham số huấn luyện
 training_args = TrainingArguments(
-    output_dir="./gemma-2b-gsm8k-finetuned", # Thư mục lưu model
-    num_train_epochs=1, # Huấn luyện trong 1 epoch là đủ để thấy kết quả tốt
-    per_device_train_batch_size=2, # Batch size nhỏ để vừa VRAM
-    gradient_accumulation_steps=4, # Tích lũy gradient để mô phỏng batch size lớn hơn (2*4=8)
-    gradient_checkpointing=True, # Kỹ thuật tiết kiệm VRAM bằng cách không lưu toàn bộ activation
-    optim="paged_adamw_8bit", # Sử dụng AdamW optimizer được tối ưu hóa cho quantization
-    logging_steps=25, # Ghi log sau mỗi 25 bước
-    save_strategy="epoch", # Lưu model sau mỗi epoch
+    output_dir="./gemma-2b-gsm8k-finetuned",
+    num_train_epochs=1,
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=4,
+    gradient_checkpointing=True,
+    optim="paged_adamw_8bit",
+    logging_steps=25,
+    save_strategy="epoch",
     learning_rate=2e-4,
-    fp16=True, # Sử dụng mixed precision (tính toán 16-bit)
+    fp16=True,
     max_grad_norm=0.3,
     warmup_ratio=0.03,
     lr_scheduler_type="constant",
@@ -100,7 +98,7 @@ training_args = TrainingArguments(
 trainer = SFTTrainer(
     model=peft_model,
     train_dataset=formatted_dataset["train"],
-    peft_config=lora_config, # Độ dài tối đa của chuỗi đầu vào
+    peft_config=lora_config,
     args=training_args,
 )
 
