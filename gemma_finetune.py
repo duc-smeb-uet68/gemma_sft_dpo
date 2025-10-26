@@ -71,8 +71,7 @@ lora_config = LoraConfig(
 )
 
 
-
-peft_model = get_peft_model(model, lora_config)
+# peft_model = get_peft_model(model, lora_config)
 
 from transformers import TrainingArguments
 from trl import SFTTrainer
@@ -96,7 +95,7 @@ training_args = TrainingArguments(
 
 
 trainer = SFTTrainer(
-    model=peft_model,
+    model=model,
     train_dataset=formatted_dataset["train"],
     peft_config=lora_config,
     args=training_args,

@@ -18,6 +18,7 @@ bnb_config = BitsAndBytesConfig(
 )
 
 
+
 model = AutoModelForCausalLM.from_pretrained(
     BASE_MODEL,
     quantization_config=bnb_config,
@@ -30,6 +31,7 @@ tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
 tokenizer.pad_token = tokenizer.eos_token
 
 dataset = load_dataset("json", data_files=DPO_DATA)["train"]
+
 
 training_args = DPOConfig(
     output_dir=DPO_OUTPUT_DIR,
